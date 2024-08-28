@@ -1,0 +1,1 @@
+project1: project1.o fraction.o point.o
