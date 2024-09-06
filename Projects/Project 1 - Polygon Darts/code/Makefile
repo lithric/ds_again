@@ -1,4 +1,3 @@
-
 COPTIONS = g++ -O2 -Wall
 
 all: project1 clean
