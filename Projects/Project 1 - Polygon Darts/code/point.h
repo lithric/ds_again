@@ -16,9 +16,11 @@ class Point {
         Point operator-(Point rhs);
         Point operator*(Fraction rhs);
         Point operator/(Fraction rhs);
-
         Fraction operator*(Point rhs); // dot product
         Fraction operator%(Point rhs); // cross product
+
+        bool operator==(Point rhs);
+        bool operator!=(Point rhs);
 
         Fraction norm();
 

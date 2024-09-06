@@ -67,6 +67,13 @@ Fraction Point::operator%(Point rhs) {
     return x*rhs.y-y*rhs.x;
 }
 
+bool Point::operator==(Point rhs) {
+    return x==rhs.x&&y==rhs.y;
+}
+bool Point::operator!=(Point rhs) {
+    return x!=rhs.x||y!=rhs.y;
+}
+
 std::ostream& operator<<(std::ostream& out, Point point) {
     out << "( " << point.getX() << " , " << point.getY() << " )";
     return out;
