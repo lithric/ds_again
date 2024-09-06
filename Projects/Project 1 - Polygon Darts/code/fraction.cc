@@ -1,14 +1,14 @@
 #include "fraction.h"
 
-int abs(int n) {
+int32_t abs(int32_t n) {
     return n>0?n:-n;
 }
 double abs(double n) {
     return n>0?n:-n;
 }
 
-int gcd(int n, int m) {
-    int n1,n2,gcd_x1,gcd_x2,_temp;
+int32_t gcd(int32_t n, int32_t m) {
+    int32_t n1,n2,gcd_x1,gcd_x2,_temp;
     n = abs(n);
     m = abs(m);
 
@@ -29,8 +29,8 @@ int gcd(int n, int m) {
     return gcd_x1;
 }
 
-void reval(int* integer, double* decimal) {
-    int n,d;
+void reval(int32_t* integer, double* decimal) {
+    int32_t n,d;
     n = *integer;
     d = *decimal;
     if (n>=0&&d>=0) {
@@ -51,7 +51,7 @@ void reval(int* integer, double* decimal) {
     }
 }
 
-void mult_vals(int* integer1, double* decimal1, int integer2, double decimal2) {
+void mult_vals(int32_t* integer1, double* decimal1, int32_t integer2, double decimal2) {
     *decimal1 = static_cast<double>(*integer1)*decimal2+
                 static_cast<double>(integer2)**decimal1+
                 *decimal1*decimal2;
@@ -59,10 +59,10 @@ void mult_vals(int* integer1, double* decimal1, int integer2, double decimal2) {
     reval(integer1,decimal1);
 }
 
-Fraction::Fraction(int _num, int _den, bool simplify) {
-    int gcd_n;
-    fnum = 0.0;
-    fden = 0.0;
+Fraction::Fraction(int32_t _num, int32_t _den, bool simplify) {
+    int32_t gcd_n;
+    dnum = 0.0;
+    dden = 0.0;
     if (_den<0) {_num=-_num;_den=-_den;}
     if (!simplify) {num=_num;den=_den;return;}
     gcd_n = gcd(_num, _den);
@@ -72,187 +72,187 @@ Fraction::Fraction(int _num, int _den, bool simplify) {
 }
 
 Fraction::Fraction(double _num_float, double _den_float, bool simplify) {
-    int gcd_n, _num, _den;
-    double _fnum, _fden;
+    int32_t gcd_n, _num, _den;
+    double _dnum, _dden;
 
-    _num = static_cast<int>(_num_float);
-    _den = static_cast<int>(_den_float);
-    _fnum = _num_float - static_cast<double>(_num);
-    _fden = _den_float - static_cast<double>(_den);
+    _num = static_cast<int32_t>(_num_float);
+    _den = static_cast<int32_t>(_den_float);
+    _dnum = _num_float - static_cast<double>(_num);
+    _dden = _den_float - static_cast<double>(_den);
     
-    reval(&_num,&_fnum);
-    reval(&_den,&_fden);
+    reval(&_num,&_dnum);
+    reval(&_den,&_dden);
 
-    if (_den<0||_fden<0) {_num=-_num;_fnum=-_fnum;}
+    if (_den<0||_dden<0) {_num=-_num;_dnum=-_dnum;}
 
-    if (!simplify) {num=_num;fnum=_fnum;den=_den;fden=_fden;}
+    if (!simplify) {num=_num;dnum=_dnum;den=_den;dden=_dden;}
 
     gcd_n = gcd(_num,_den);
 
     num = _num/gcd_n;
     den = _den/gcd_n;
-    fnum = _fnum/static_cast<double>(gcd_n);
-    fden = _fden/static_cast<double>(gcd_n);
+    dnum = _dnum/static_cast<double>(gcd_n);
+    dden = _dden/static_cast<double>(gcd_n);
 }
 
-Fraction::Fraction(int _num, double _fnum, int _den, double _fden, bool simplify) {
-    int gcd_n;
+Fraction::Fraction(int32_t _num, double _dnum, int32_t _den, double _dden, bool simplify) {
+    int32_t gcd_n;
     
-    reval(&_num,&_fnum);
-    reval(&_den,&_fden);
+    reval(&_num,&_dnum);
+    reval(&_den,&_dden);
 
-    if (_den<0||_fden<0) {_num=-_num;_fnum=-_fnum;}
+    if (_den<0||_dden<0) {_num=-_num;_dnum=-_dnum;}
 
-    if (!simplify) {num=_num;fnum=_fnum;den=_den;fden=_fden;return;}
+    if (!simplify) {num=_num;dnum=_dnum;den=_den;dden=_dden;return;}
 
     gcd_n = gcd(_num,_den);
 
     num = _num/gcd_n;
     den = _den/gcd_n;
-    fnum = _fnum/static_cast<double>(gcd_n);
-    fden = _fden/static_cast<double>(gcd_n);
+    dnum = _dnum/static_cast<double>(gcd_n);
+    dden = _dden/static_cast<double>(gcd_n);
 }
 
 Fraction Fraction::operator+() {
-    return Fraction(num,fnum,den,fden,false);
+    return Fraction(num,dnum,den,dden,false);
 }
 
 Fraction Fraction::operator+(Fraction rhs) {
-    int _num, _den;
-    double _fnum, _fden;
+    int32_t _num, _den;
+    double _dnum, _dden;
 
     _num = num*rhs.den+rhs.num*den;
-    _fnum = num*rhs.fden+rhs.num*fden+
-            rhs.den*fnum+den*rhs.fnum+
-            fnum*rhs.fden+rhs.fnum*fden;
+    _dnum = num*rhs.dden+rhs.num*dden+
+            rhs.den*dnum+den*rhs.dnum+
+            dnum*rhs.dden+rhs.dnum*dden;
     _den = den*rhs.den;
-    _fden = den*rhs.fden+rhs.den*fden+fden*rhs.fden;
+    _dden = den*rhs.dden+rhs.den*dden+dden*rhs.dden;
 
-    return Fraction(_num,_fnum,_den,_fden);
+    return Fraction(_num,_dnum,_den,_dden);
 }
 
 Fraction Fraction::operator-() {
-    return Fraction(-num,-fnum,den,fden,false);
+    return Fraction(-num,-dnum,den,dden,false);
 }
 
 Fraction Fraction::operator-(Fraction rhs) {
-    int _num, _den;
-    double _fnum, _fden;
+    int32_t _num, _den;
+    double _dnum, _dden;
 
     _num = num*rhs.den-rhs.num*den;
-    _fnum = static_cast<double>(num)*rhs.fden-static_cast<double>(rhs.num)*fden+
-            static_cast<double>(rhs.den)*fnum-static_cast<double>(den)*rhs.fnum+
-            fnum*rhs.fden-rhs.fnum*fden;
+    _dnum = static_cast<double>(num)*rhs.dden-static_cast<double>(rhs.num)*dden+
+            static_cast<double>(rhs.den)*dnum-static_cast<double>(den)*rhs.dnum+
+            dnum*rhs.dden-rhs.dnum*dden;
     _den = den*rhs.den;
-    _fden = static_cast<double>(den)*rhs.fden+
-            static_cast<double>(rhs.den)*fden+
-            fden*rhs.fden;
+    _dden = static_cast<double>(den)*rhs.dden+
+            static_cast<double>(rhs.den)*dden+
+            dden*rhs.dden;
 
-    return Fraction(_num,_fnum,_den,_fden);
+    return Fraction(_num,_dnum,_den,_dden);
 }
 
 Fraction Fraction::operator*(Fraction rhs) {
-    int _num, _den;
-    double _fnum, _fden;
+    int32_t _num, _den;
+    double _dnum, _dden;
     _num = num;
-    _fnum = fnum;
+    _dnum = dnum;
     _den = den;
-    _fden = fden;
+    _dden = dden;
 
-    mult_vals(&_num,&_fnum,rhs.num,rhs.fnum);
-    mult_vals(&_den,&_fden,rhs.den,rhs.fden);
+    mult_vals(&_num,&_dnum,rhs.num,rhs.dnum);
+    mult_vals(&_den,&_dden,rhs.den,rhs.dden);
 
-    return Fraction(_num,_fnum,_den,_fden);
+    return Fraction(_num,_dnum,_den,_dden);
 }
 
 Fraction Fraction::operator/(Fraction rhs) {
-    int _num, _den;
-    double _fnum, _fden;
+    int32_t _num, _den;
+    double _dnum, _dden;
     _num = num;
-    _fnum = fnum;
+    _dnum = dnum;
     _den = den;
-    _fden = fden;
+    _dden = dden;
 
-    mult_vals(&_num,&_fnum,rhs.den,rhs.fden);
-    mult_vals(&_den,&_fden,rhs.num,rhs.fnum);
+    mult_vals(&_num,&_dnum,rhs.den,rhs.dden);
+    mult_vals(&_den,&_dden,rhs.num,rhs.dnum);
 
-    return Fraction(_num,_fnum,_den,_fden);
+    return Fraction(_num,_dnum,_den,_dden);
 }
 
-Fraction Fraction::operator^(int rhs) {
-    int _num, _den;
-    double _fnum, _fden, _lnum, _lden;
+Fraction Fraction::operator^(int32_t rhs) {
+    int32_t _num, _den;
+    double _dnum, _dden, _lnum, _lden;
     if (rhs==0) return Fraction(1,1,false);
     _num = rhs>0?num:den;
-    _fnum = rhs>0?fnum:fden;
+    _dnum = rhs>0?dnum:dden;
     _den = rhs>0?den:num;
-    _fden = rhs>0?fden:fnum;
+    _dden = rhs>0?dden:dnum;
     rhs = abs(rhs);
     while (rhs>1) {
-        _lnum = _num*fnum+_fnum*num;
-        _lden = _den*fden+_fden*den;
+        _lnum = _num*dnum+_dnum*num;
+        _lden = _den*dden+_dden*den;
         _num = _num*num+std::floor(_lnum);
-        _fnum = _fnum*fnum+(_lnum-std::floor(_lnum));
-        reval(&_num,&_fnum);
+        _dnum = _dnum*dnum+(_lnum-std::floor(_lnum));
+        reval(&_num,&_dnum);
         _den = _den*den+std::floor(_lden);
-        _fden = _fden*fden+(_lden-std::floor(_lden));
-        reval(&_den,&_fden);
+        _dden = _dden*dden+(_lden-std::floor(_lden));
+        reval(&_den,&_dden);
         rhs--;
     }
-    return Fraction(_num,_fnum,_den,_fden);
+    return Fraction(_num,_dnum,_den,_dden);
 }
 
 bool Fraction::operator==(Fraction rhs) {
     return num==rhs.num&&den==rhs.den&&
-           fnum==rhs.fnum&&fden==rhs.fden;
+           dnum==rhs.dnum&&dden==rhs.dden;
 }
 
 bool Fraction::operator!=(Fraction rhs) {
     return num!=rhs.num||den!=rhs.den||
-           fnum!=rhs.fnum||fden!=rhs.fden;
+           dnum!=rhs.dnum||dden!=rhs.dden;
 }
 
 bool Fraction::operator>=(Fraction rhs) {
     if (*this==rhs) return true;
-    return (num+fnum)*(rhs.den+rhs.fden)>=(den+fden)*(rhs.num+rhs.fnum);
+    return (num+dnum)*(rhs.den+rhs.dden)>=(den+dden)*(rhs.num+rhs.dnum);
 }
 
 bool Fraction::operator<=(Fraction rhs) {
     if (*this==rhs) return true; // faster
-    return (num+fnum)*(rhs.den+rhs.fden)<=(den+fden)*(rhs.num+rhs.fnum);
+    return (num+dnum)*(rhs.den+rhs.dden)<=(den+dden)*(rhs.num+rhs.dnum);
 }
 
 bool Fraction::operator>(Fraction rhs) {
     if (*this==rhs) return false; // faster
-    return (num+fnum)*(rhs.den+rhs.fden)>(den+fden)*(rhs.num+rhs.fnum);
+    return (num+dnum)*(rhs.den+rhs.dden)>(den+dden)*(rhs.num+rhs.dnum);
 }
 
 bool Fraction::operator<(Fraction rhs) {
     if (*this==rhs) return false; // faster
-    return (num+fnum)*(rhs.den+rhs.fden)<(den+fden)*(rhs.num+rhs.fnum);
+    return (num+dnum)*(rhs.den+rhs.dden)<(den+dden)*(rhs.num+rhs.dnum);
 }
 
-std::ostream& operator<<(std::ostream& out, Fraction& fraction) {
+std::ostream& operator<<(std::ostream& out, Fraction fraction) {
     if (fraction.has_dec_num()) {
         out << fraction.get_exact_num();
     }
     else {
-        out << fraction.get_num(); 
+        out << fraction.getNum(); 
     }
-    out << "/";
+    out << " / ";
     if (fraction.has_dec_den()) {
         out << fraction.get_exact_den();
     }
     else {
-        out << fraction.get_den();
+        out << fraction.getDen();
     }
     return out;
 }
 
-std::istream& operator>>(std::istream& in, Fraction fraction) {
-    int _num, _den;
-    char delimiter;
-    in >> _num >> delimiter >> _den;
+std::istream& operator>>(std::istream& in, Fraction& fraction) {
+    int32_t _num, _den;
+    char delim;
+    in >> _num >> delim >> _den;
     fraction = Fraction(_num,_den);
     return in;
 }

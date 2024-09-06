@@ -50,7 +50,7 @@ Point Point::operator/(Fraction rhs) {
 
 Fraction Point::norm() {
     Fraction abs_2;
-    float _num, _den;
+    double _num, _den;
     abs_2 = x*x+y*y;
     _num = std::sqrt(abs_2.get_exact_num());
     _den = std::sqrt(abs_2.get_exact_den());
@@ -65,4 +65,16 @@ Fraction Point::operator*(Point rhs) {
 // cross product
 Fraction Point::operator%(Point rhs) {
     return x*rhs.y-y*rhs.x;
+}
+
+std::ostream& operator<<(std::ostream& out, Point point) {
+    out << point.getX() << " , " << point.getY();
+    return out;
+}
+std::istream& operator>>(std::istream& in, Point& point) {
+    Fraction x, y;
+    char delim;
+    in >> x >> delim >> y;
+    point = Point(x,y);
+    return in;
 }

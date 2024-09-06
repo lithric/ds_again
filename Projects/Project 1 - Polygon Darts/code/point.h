@@ -21,13 +21,16 @@ class Point {
         Fraction operator%(Point rhs); // cross product
 
         Fraction norm();
+
+        Fraction getX() {return x;};
+        Fraction getY() {return y;};
         
     private:
         Fraction x;
         Fraction y;
 };
 
-std::ostream& operator<<(std::ostream& out, Point& point);
-std::istream& operator>>(std::istream& in, Point point);
+std::ostream& operator<<(std::ostream& out, Point point);
+std::istream& operator>>(std::istream& in, Point& point);
 
 #endif
