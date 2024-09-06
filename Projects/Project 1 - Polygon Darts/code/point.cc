@@ -68,7 +68,7 @@ Fraction Point::operator%(Point rhs) {
 }
 
 std::ostream& operator<<(std::ostream& out, Point point) {
-    out << point.getX() << " , " << point.getY();
+    out << "( " << point.getX() << " , " << point.getY() << " )";
     return out;
 }
 std::istream& operator>>(std::istream& in, Point& point) {

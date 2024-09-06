@@ -19,9 +19,7 @@ bool intersect(Point p1, Point p2, Point q1, Point q2, Point& x) {
 }
 
 int main() {
-    Fraction a = Fraction(1,1);
-    Fraction b = Fraction(2,3);
-    Fraction c = a + b;
-    std::cout << c << std::endl;
+    Point a(Fraction(1,1),Fraction(2,3));
+    std::cout << a << std::endl;
     return 0;
 }
