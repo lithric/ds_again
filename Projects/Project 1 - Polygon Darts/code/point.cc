@@ -80,8 +80,8 @@ std::ostream& operator<<(std::ostream& out, Point point) {
 }
 std::istream& operator>>(std::istream& in, Point& point) {
     Fraction x, y;
-    char delim;
-    in >> x >> delim >> y;
+    char left_peren, comma, right_peren;
+    in >> left_peren >> x >> comma >> y >> right_peren;
     point = Point(x,y);
     return in;
 }
