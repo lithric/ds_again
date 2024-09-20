@@ -1,0 +1,3 @@
+/home/scsiet/Documents/ds_again/Lab 3/3 - Debugging/Fraction/cmake-build-debug/CMakeFiles/Fraction.dir
+/home/scsiet/Documents/ds_again/Lab 3/3 - Debugging/Fraction/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/scsiet/Documents/ds_again/Lab 3/3 - Debugging/Fraction/cmake-build-debug/CMakeFiles/rebuild_cache.dir
