@@ -16,4 +16,4 @@ point.o: point.cc point.h fraction.h
 
 clean:
 	rm -f *.o
-	echo "everything done"
+	echo "\n\nEverything compiled and cleaned!\nRun ./project1 to run program."

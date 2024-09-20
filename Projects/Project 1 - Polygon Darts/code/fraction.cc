@@ -250,9 +250,10 @@ std::ostream& operator<<(std::ostream& out, Fraction fraction) {
 }
 
 std::istream& operator>>(std::istream& in, Fraction& fraction) {
-    int32_t _num, _den;
+    int32_t _num=0, _den=1;
     char delim;
-    in >> _num >> delim >> _den;
+    in >> _num >> delim;
+    if (delim=='/') in >> _den;
     fraction = Fraction(_num,_den);
     return in;
 }
