@@ -12,13 +12,19 @@ class Fraction {
         Fraction(int32_t _num, double _dnum, int32_t _den, double _dden, bool simplify=true);
         ~Fraction() = default;
 
+        Fraction* operator=(Fraction rhs);
         Fraction operator-();
         Fraction operator-(Fraction rhs);
+        Fraction* operator-=(Fraction rhs) {*this=*this-rhs;return this;}
         Fraction operator+();
         Fraction operator+(Fraction rhs);
+        Fraction* operator+=(Fraction rhs) {*this=*this+rhs;return this;}
         Fraction operator*(Fraction rhs);
+        Fraction* operator*=(Fraction rhs) {*this=*this*rhs;return this;}
         Fraction operator/(Fraction rhs);
+        Fraction* operator/=(Fraction rhs) {*this=*this/rhs;return this;}
         Fraction operator^(int32_t rhs);
+        Fraction* operator^=(int32_t rhs) {*this=*this^rhs;return this;}
 
         bool operator==(Fraction rhs);
         bool operator!=(Fraction rhs);

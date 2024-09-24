@@ -1,10 +1,10 @@
 #include "fraction.h"
 
 int32_t abs(int32_t n) {
-    return n>0?n:-n;
+    return n>=0?n:-n;
 }
 double abs(double n) {
-    return n>0?n:-n;
+    return n>=0?n:-n;
 }
 
 int32_t gcd(int32_t n, int32_t m) {
@@ -111,6 +111,14 @@ Fraction::Fraction(int32_t _num, double _dnum, int32_t _den, double _dden, bool 
     den = _den/gcd_n;
     dnum = _dnum/static_cast<double>(gcd_n);
     dden = _dden/static_cast<double>(gcd_n);
+}
+
+Fraction* Fraction::operator=(Fraction rhs) {
+    this->num = rhs.num;
+    this->den = rhs.den;
+    this->dnum = rhs.dnum;
+    this->dden = rhs.dden;
+    return this;
 }
 
 Fraction Fraction::operator+() {
@@ -251,9 +259,9 @@ std::ostream& operator<<(std::ostream& out, Fraction fraction) {
 
 std::istream& operator>>(std::istream& in, Fraction& fraction) {
     int32_t _num=0, _den=1;
-    char delim;
-    in >> _num >> delim;
-    if (delim=='/') in >> _den;
+    char slash;
+    in >> _num >> slash;
+    if (slash=='/') in >> _den;
     fraction = Fraction(_num,_den);
     return in;
 }
