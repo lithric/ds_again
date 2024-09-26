@@ -140,7 +140,7 @@ int main() {
     int32_t* total_vertices_arr; // total number of vertices per polygon on the dartboard
     Point* darts; // points of the darts on the dartboard
     int32_t total_darts; // total number of darts on the dartboard
-    Fraction dartboard_area; // the area of the dartboard
+    Fraction dartboard_area = 0; // the area of the dartboard
     Fraction score = 0; // the score of the game
     
     dartboard_rectangle[2] = prompt(Point,"Input the point for the opposite corner of the dartboard:\n");
