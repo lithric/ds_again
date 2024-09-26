@@ -133,11 +133,11 @@ int32_t _check_data(int32_t data) {
 }
 
 int main() {
-    Point* dartboard_rectangle = new Point[4];
+    Point* dartboard_rectangle = new Point[4]; // dartboard rectangle
     dartboard_rectangle[0] = Point(0,0);
     Point** polygons; // polygons on the dartboard
-    int32_t total_polygons; // total number of polygons (including the dartboard rectangle)
-    int32_t* total_vertices_arr; // total number of vertices per polygon on the dartboard (including the dartboard rectange)
+    int32_t total_polygons; // total number of polygons on the dartboard
+    int32_t* total_vertices_arr; // total number of vertices per polygon on the dartboard
     Point* darts; // points of the darts on the dartboard
     int32_t total_darts; // total number of darts on the dartboard
     Fraction dartboard_area; // the area of the dartboard
