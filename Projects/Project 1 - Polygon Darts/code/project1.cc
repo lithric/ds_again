@@ -62,8 +62,8 @@ bool intersect(Point p1, Point p2, Point q1, Point q2, Point* x) {
         t = (v%s)/d; // Intersection point along P in units of r
         u = (v%r)/d; // Intersection point along Q in units of s
 
-        if (t>0&&t<1&&u>0&&u<1) {
-            *x = p1+r*t;
+        if ((t>0&&t<1)&&(u>0&&u<1)) {
+            *x = p1+(r*t);
             return true;
         }
     }
@@ -132,10 +132,6 @@ int32_t _check_data(int32_t data) {
     return data;
 }
 
-Fraction abs(Fraction num) {
-    return num>=0?num:-num;
-}
-
 int main() {
     Point* dartboard_rectangle = new Point[4];
     dartboard_rectangle[0] = Point(0,0);
@@ -146,12 +142,10 @@ int main() {
     int32_t total_darts; // total number of darts on the dartboard
     Fraction dartboard_area; // the area of the dartboard
     Fraction score = 0; // the score of the game
-
-    print(Fraction(0,1)*Fraction(10,10));
     
     dartboard_rectangle[2] = prompt(Point,"Input the point for the opposite corner of the dartboard:\n");
-    dartboard_rectangle[1] = Point(0,dartboard_rectangle[2].getY());
-    dartboard_rectangle[3] = Point(dartboard_rectangle[2].getX(),0);
+    dartboard_rectangle[1] = Point(dartboard_rectangle[2].getX(),0);
+    dartboard_rectangle[3] = Point(0,dartboard_rectangle[2].getY());
     if (dartboard_rectangle[2].getX()<0||dartboard_rectangle[2].getY()<0) {
         Point temp = dartboard_rectangle[1];
         dartboard_rectangle[1] = dartboard_rectangle[3];
@@ -169,7 +163,7 @@ int main() {
             polygons[i][j] = prompt(Point,"Input the point for vertice ",j+1," of polygon ",i+1,":");
         }
     }
-    total_darts = prompt(int32_t,"How many darts were thrown?:\n");
+    total_darts = prompt(int32_t,"How many darts were thrown?: ");
     darts = new Point[total_darts];
     for (int i=0;i<total_darts;i++) {
         darts[i] = prompt(Point,"Where did dart ",i+1," land?:");
@@ -184,7 +178,7 @@ int main() {
         }
     }
 
-    print("Your final score is: ",score,"\n");
+    print("\n","Your final score is: ",score,"\n");
 
     for (int i=0;i<total_polygons;i++) {
         delete[] polygons[i]; // free sub-array of vertices
