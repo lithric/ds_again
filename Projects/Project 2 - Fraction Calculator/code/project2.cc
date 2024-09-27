@@ -1,10 +1,9 @@
 #include <iostream>
-#include "fraction.h"
 #include "stack.h"
 
 // allows recursion
 #define AS_MACRO
-// ends recurrsion
+// ends recursion
 #define END_SIGNAL(...)
 
 #define MAP_IS_END_SIGNAL() 0, END_SIGNAL
@@ -51,6 +50,7 @@ T clean_reading(T (*func)(T)) {
 #define func_prompt(type,func,args...) (MAP(writing,args), clean_reading<type>(func))
 
 int main() {
-    Stack<Fraction> numStack;
+    Stack<char> bob('3');
+    //print(bob.pop());
     return 0;
 }

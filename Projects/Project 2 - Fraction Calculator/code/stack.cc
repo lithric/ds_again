@@ -10,26 +10,26 @@ Stack<T>::Stack() {
 // length 1 stack
 template <typename T>
 Stack<T>::Stack(T _top) {
-    *top = _top;
-    *next = Stack<T>();
+    top = &_top;
+    next = new Stack<T>();
 }
 
 // arbitrary length stack
 template <typename T>
-Stack<T>::Stack(T _top, Stack<T> _next) {
-    *top = _top;
-    *next = _next;
+Stack<T>::Stack(T _top, Stack<T>* _next) {
+    top = &_top;
+    next = _next;
 }
 
 template <typename T>
 void Stack<T>::push(T rhs) {
     if (top==nullptr) { // empty stack
-        next = Stack<T>();
+        *next = Stack<T>();
         *top = rhs;
         return;
     }
     else {
-        next = Stack<T>(*top,next);
+        *next = Stack<T>(*top,next);
         *top = rhs;
         return;
     }

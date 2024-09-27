@@ -8,7 +8,7 @@ class Stack {
     public:
         Stack();
         Stack(T top);
-        Stack(T top, Stack<T> next);
+        Stack(T top, Stack<T>* next);
         ~Stack() = default;
 
         void push(T);
@@ -17,5 +17,7 @@ class Stack {
         T* top;
         Stack<T>* next;
 };
+
+#include "stack.cc"
 
 #endif
