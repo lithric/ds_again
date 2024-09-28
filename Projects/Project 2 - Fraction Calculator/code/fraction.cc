@@ -3,7 +3,7 @@
 constexpr int32_t abs(int32_t n) {return n>=0?n:-n;}
 constexpr double abs(double n) {return n>=0?n:-n;}
 
-constexpr int32_t gcd(int32_t n, int32_t m) {
+static constexpr int32_t gcd(int32_t n, int32_t m) {
     n = abs(n);
     m = abs(m);
 
@@ -24,7 +24,7 @@ constexpr int32_t gcd(int32_t n, int32_t m) {
     return gcd_x1;
 }
 
-constexpr void format_int_decimal(int32_t* integer, double* decimal) {
+static constexpr void format_int_decimal(int32_t* integer, double* decimal) {
     int32_t n = 0;
     double d = 0.0;
     // remove decimal overflow
@@ -52,7 +52,7 @@ constexpr void format_int_decimal(int32_t* integer, double* decimal) {
     }
 }
 
-constexpr void mult_int_decimal(int32_t* integer1, double* decimal1, int32_t integer2, double decimal2) {
+static constexpr void mult_int_decimal(int32_t* integer1, double* decimal1, int32_t integer2, double decimal2) {
     *decimal1 = static_cast<double>(*integer1)*decimal2+
                 static_cast<double>(integer2)*(*decimal1)+
                 (*decimal1)*decimal2;
