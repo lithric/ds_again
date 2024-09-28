@@ -29,7 +29,7 @@ void Dictionary<KeyType,ValueType>::remove(const KeyType &k) {
 }
 
 template <typename KeyType, typename ValueType>
-ValueType Dictionary<KeyType,ValueType>::search(const KeyType &k) {
+constexpr ValueType Dictionary<KeyType,ValueType>::search(const KeyType &k) const {
     for (uint32_t i=0;i<nItems;i++) if (keys[i]==k) return values[i];
     throw std::domain_error("search: Key not found.");
 }

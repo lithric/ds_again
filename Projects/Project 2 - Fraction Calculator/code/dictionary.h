@@ -7,18 +7,18 @@ const uint32_t MAX_ITEMS = 100;
 template <typename KeyType, typename ValueType>
 class Dictionary {
     public:
-        Dictionary(){nItems=0;};
+        constexpr Dictionary(){nItems=0;}
         ~Dictionary() = default;
 
-        bool isEmpty() {return nItems==0;}
-        uint32_t size() {return nItems;}
+        constexpr bool isEmpty() const {return nItems==0;}
+        constexpr uint32_t size() const {return nItems;}
         
-        void clear() {nItems=0;}
+        constexpr void clear() {nItems=0;}
 
         void insert(const KeyType &k, ValueType v);
         void remove(const KeyType &k);
 
-        ValueType search(const KeyType &k);
+        constexpr ValueType search(const KeyType &k) const;
     private:
         ValueType values[MAX_ITEMS]; // array of values
         KeyType keys[MAX_ITEMS]; // array of keys

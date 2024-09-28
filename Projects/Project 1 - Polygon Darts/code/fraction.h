@@ -18,32 +18,36 @@ class Fraction {
         ~Fraction() = default;
 
         const Fraction& operator=(const Fraction& rhs);
-        Fraction operator-();
-        Fraction operator-(const Fraction& rhs);
+        Fraction operator-() const;
+        Fraction operator-(const Fraction& rhs) const;
         const Fraction& operator-=(const Fraction& rhs) {return *this=*this-rhs;}
-        Fraction operator+();
-        Fraction operator+(const Fraction& rhs);
+        Fraction operator+() const;
+        Fraction operator+(const Fraction& rhs) const;
         const Fraction& operator+=(const Fraction& rhs) {return *this=*this+rhs;}
-        Fraction operator*(const Fraction& rhs);
+        Fraction operator*(const Fraction& rhs) const;
         const Fraction& operator*=(const Fraction& rhs) {return *this=*this*rhs;}
-        Fraction operator/(const Fraction& rhs);
+        Fraction operator/(const Fraction& rhs) const;
         const Fraction& operator/=(const Fraction& rhs) {return *this=*this/rhs;}
-        Fraction operator^(const int32_t& rhs);
+        Fraction operator^(const int32_t& rhs) const;
         const Fraction& operator^=(const int32_t& rhs) {return *this=*this^rhs;}
 
-        bool operator==(const Fraction& rhs);
-        bool operator!=(const Fraction& rhs);
-        bool operator>=(const Fraction& rhs);
-        bool operator<=(const Fraction& rhs);
-        bool operator>(const Fraction& rhs);
-        bool operator<(const Fraction& rhs);
+        bool operator==(const Fraction& rhs) const;
+        bool operator!=(const Fraction& rhs) const;
+        bool operator>=(const Fraction& rhs) const;
+        bool operator<=(const Fraction& rhs) const;
+        bool operator>(const Fraction& rhs) const;
+        bool operator<(const Fraction& rhs) const;
 
-        int32_t getNum() {return num;};
-        int32_t getDen() {return den;};
-        double get_exact_num() {return num+dnum;};
-        double get_exact_den() {return den+dden;};
-        bool has_dec_num() {return dnum!=0;};
-        bool has_dec_den() {return dden!=0;};
+        int32_t getNum() const {return num;}
+        int32_t getDen() const {return den;}
+        double get_exact_num() const {return num+dnum;}
+        double get_exact_den() const {return den+dden;}
+        bool has_dec_num() const {return dnum!=0;}
+        bool has_dec_den() const {return dden!=0;}
+        bool isNaN() const {return num==0&&dnum==0&&den==0&&dden==0;}
+        bool isInfinity() const {return (num!=0||dnum!=0)&&(den==0&&dden==0);}
+        bool isPInfinity() const {return (num>0||dnum>0)&&(den==0&&dden==0);}
+        bool isNInfinity() const {return (num<0||dnum<0)&&(den==0&&dden==0);}
 
     private:
         int32_t num;

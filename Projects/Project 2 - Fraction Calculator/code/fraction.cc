@@ -1,27 +1,22 @@
 #include "fraction.h"
 
-int32_t abs(int32_t n) {
-    return n>=0?n:-n;
-}
-double abs(double n) {
-    return n>=0?n:-n;
-}
+constexpr int32_t abs(int32_t n) {return n>=0?n:-n;}
+constexpr double abs(double n) {return n>=0?n:-n;}
 
-int32_t gcd(int32_t n, int32_t m) {
-    int32_t n1,n2,gcd_x1,gcd_x2,_temp;
+constexpr int32_t gcd(int32_t n, int32_t m) {
     n = abs(n);
     m = abs(m);
 
-    n1 = n<m?n:m;
-    n2 = n<m?m:n;
+    int32_t n1 = n<m?n:m;
+    int32_t n2 = n<m?m:n;
 
     // n1 <= n2
 
-    gcd_x1 = n2;
-    gcd_x2 = n1;
+    int32_t gcd_x1 = n2;
+    int32_t gcd_x2 = n1;
 
     while (gcd_x2!=0) {
-        _temp = gcd_x2;
+        int32_t _temp = gcd_x2;
         gcd_x2 = gcd_x1 % gcd_x2;
         gcd_x1 = _temp;
     }
@@ -29,9 +24,9 @@ int32_t gcd(int32_t n, int32_t m) {
     return gcd_x1;
 }
 
-void format_int_decimal(int32_t* integer, double* decimal) {
-    int32_t n;
-    double d;
+constexpr void format_int_decimal(int32_t* integer, double* decimal) {
+    int32_t n = 0;
+    double d = 0.0;
     // remove decimal overflow
     *integer += static_cast<int32_t>(*decimal);
     *decimal -= static_cast<int32_t>(*decimal);
@@ -57,7 +52,7 @@ void format_int_decimal(int32_t* integer, double* decimal) {
     }
 }
 
-void mult_int_decimal(int32_t* integer1, double* decimal1, int32_t integer2, double decimal2) {
+constexpr void mult_int_decimal(int32_t* integer1, double* decimal1, int32_t integer2, double decimal2) {
     *decimal1 = static_cast<double>(*integer1)*decimal2+
                 static_cast<double>(integer2)*(*decimal1)+
                 (*decimal1)*decimal2;
@@ -66,19 +61,20 @@ void mult_int_decimal(int32_t* integer1, double* decimal1, int32_t integer2, dou
 }
 
 Fraction::Fraction(int32_t _num, int32_t _den, bool simplify) {
-    int32_t gcd_n;
+    int32_t gcd_n = 0;
     dnum = 0.0;
     dden = 0.0;
     if (_den<0) {_num=-_num;_den=-_den;}
     if (!simplify) {num=_num;den=_den;return;}
     gcd_n = gcd(_num, _den);
+    if (gcd_n==0) throw std::logic_error("fraction: 0/0 is not a fraction.");
 
     num = _num/gcd_n;
     den = _den/gcd_n;
 }
 
 Fraction::Fraction(double _num_double, double _den_double, bool simplify) {
-    int32_t gcd_n, _num, _den;
+    int32_t gcd_n = 0, _num, _den;
     double _dnum, _dden;
 
     _num = static_cast<int32_t>(_num_double);
@@ -94,6 +90,7 @@ Fraction::Fraction(double _num_double, double _den_double, bool simplify) {
     if (!simplify) {num=_num;dnum=_dnum;den=_den;dden=_dden;}
 
     gcd_n = gcd(_num,_den);
+    if (gcd_n==0) throw std::logic_error("fraction: 0/0 is not a fraction.");
 
     num = _num/gcd_n;
     den = _den/gcd_n;
@@ -102,7 +99,7 @@ Fraction::Fraction(double _num_double, double _den_double, bool simplify) {
 }
 
 Fraction::Fraction(int32_t _num, double _dnum, int32_t _den, double _dden, bool simplify) {
-    int32_t gcd_n;
+    int32_t gcd_n = 0;
     
     format_int_decimal(&_num,&_dnum);
     format_int_decimal(&_den,&_dden);
@@ -112,6 +109,7 @@ Fraction::Fraction(int32_t _num, double _dnum, int32_t _den, double _dden, bool 
     if (!simplify) {num=_num;dnum=_dnum;den=_den;dden=_dden;return;}
 
     gcd_n = gcd(_num,_den);
+    if (gcd_n==0) throw std::logic_error("fraction: 0/0 is not a fraction.");
 
     num = _num/gcd_n;
     den = _den/gcd_n;
@@ -127,13 +125,21 @@ const Fraction& Fraction::operator=(const Fraction& rhs) {
     return rhs;
 }
 
-Fraction Fraction::operator+() {
+Fraction Fraction::operator+() const {
     return Fraction(num,dnum,den,dden,false);
 }
 
-Fraction Fraction::operator+(const Fraction& rhs) {
+Fraction Fraction::operator+(const Fraction& rhs) const {
     int32_t _num, _den;
     double _dnum, _dden;
+    if (isNaN()||rhs.isNaN()) return Fraction(0,0);
+
+    if (isInfinity()||rhs.isInfinity()) {
+        if ((isPInfinity()&&rhs.isNInfinity())||
+            (isNInfinity()&&rhs.isPInfinity())) return Fraction(0,0);
+        if (isPInfinity()&&rhs.isPInfinity()) return Fraction(1,0);
+        if (isNInfinity()&&rhs.isNInfinity()) return Fraction(-1,0);
+    }
 
     _num = num*rhs.den+den*rhs.num;
     _dnum = static_cast<double>(num)*rhs.dden+static_cast<double>(rhs.num)*dden+
@@ -147,11 +153,11 @@ Fraction Fraction::operator+(const Fraction& rhs) {
     return Fraction(_num,_dnum,_den,_dden);
 }
 
-Fraction Fraction::operator-() {
+Fraction Fraction::operator-() const {
     return Fraction(-num,-dnum,den,dden,false);
 }
 
-Fraction Fraction::operator-(const Fraction& rhs) {
+Fraction Fraction::operator-(const Fraction& rhs) const {
     int32_t _num, _den;
     double _dnum, _dden;
 
@@ -167,7 +173,7 @@ Fraction Fraction::operator-(const Fraction& rhs) {
     return Fraction(_num,_dnum,_den,_dden);
 }
 
-Fraction Fraction::operator*(const Fraction& rhs) {
+Fraction Fraction::operator*(const Fraction& rhs) const {
     int32_t _num, _den;
     double _dnum, _dden;
     _num = num;
@@ -181,13 +187,11 @@ Fraction Fraction::operator*(const Fraction& rhs) {
     return Fraction(_num,_dnum,_den,_dden);
 }
 
-Fraction Fraction::operator/(const Fraction& rhs) {
-    int32_t _num, _den;
-    double _dnum, _dden;
-    _num = num;
-    _dnum = dnum;
-    _den = den;
-    _dden = dden;
+Fraction Fraction::operator/(const Fraction& rhs) const {
+    int32_t _num = num;
+    double _dnum = dnum;
+    int32_t _den = den;
+    double _dden = dden;
 
     mult_int_decimal(&_num,&_dnum,rhs.den,rhs.dden);
     mult_int_decimal(&_den,&_dden,rhs.num,rhs.dnum);
@@ -195,7 +199,7 @@ Fraction Fraction::operator/(const Fraction& rhs) {
     return Fraction(_num,_dnum,_den,_dden);
 }
 
-Fraction Fraction::operator^(const int32_t& rhs) {
+Fraction Fraction::operator^(const int32_t& rhs) const {
     int32_t _num, _den;
     double _dnum, _dden, _lnum, _lden;
     if (rhs==0) return Fraction(1,1,false);
@@ -218,32 +222,32 @@ Fraction Fraction::operator^(const int32_t& rhs) {
     return Fraction(_num,_dnum,_den,_dden);
 }
 
-bool Fraction::operator==(const Fraction& rhs) {
+bool Fraction::operator==(const Fraction& rhs) const {
     return num==rhs.num&&den==rhs.den&&
            dnum==rhs.dnum&&dden==rhs.dden;
 }
 
-bool Fraction::operator!=(const Fraction& rhs) {
+bool Fraction::operator!=(const Fraction& rhs) const {
     return num!=rhs.num||den!=rhs.den||
            dnum!=rhs.dnum||dden!=rhs.dden;
 }
 
-bool Fraction::operator>=(const Fraction& rhs) {
+bool Fraction::operator>=(const Fraction& rhs) const {
     if (*this==rhs) return true;
     return (num+dnum)*(rhs.den+rhs.dden)>=(den+dden)*(rhs.num+rhs.dnum);
 }
 
-bool Fraction::operator<=(const Fraction& rhs) {
+bool Fraction::operator<=(const Fraction& rhs) const {
     if (*this==rhs) return true; // faster
     return (num+dnum)*(rhs.den+rhs.dden)<=(den+dden)*(rhs.num+rhs.dnum);
 }
 
-bool Fraction::operator>(const Fraction& rhs) {
+bool Fraction::operator>(const Fraction& rhs) const {
     if (*this==rhs) return false; // faster
     return (num+dnum)*(rhs.den+rhs.dden)>(den+dden)*(rhs.num+rhs.dnum);
 }
 
-bool Fraction::operator<(const Fraction& rhs) {
+bool Fraction::operator<(const Fraction& rhs) const {
     if (*this==rhs) return false; // faster
     return (num+dnum)*(rhs.den+rhs.dden)<(den+dden)*(rhs.num+rhs.dnum);
 }

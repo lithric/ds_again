@@ -240,7 +240,7 @@ Fraction evaluate(string s,Stack<VarNum>* numStack, Stack<char>* opStack, Dictio
         performOperation(numStack,opStack,varDict);
     }
 
-    if (!debugging) if (numStack->size()>1||opStack->size()>1) throw std::logic_error("calc: malformed input");
+    if (!debugging) if (numStack->size()>1||opStack->size()>1) throw std::domain_error("calc: malformed input");
 
     return getNumber(numStack->getTop(),varDict);
 }
