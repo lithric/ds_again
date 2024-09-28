@@ -20,8 +20,8 @@ class Dictionary {
 
         ValueType search(const KeyType &k);
     private:
-        ValueType* values = new ValueType[MAX_ITEMS]; // array of values
-        KeyType* keys = new KeyType[MAX_ITEMS]; // array of keys
+        ValueType values[MAX_ITEMS]; // array of values
+        KeyType keys[MAX_ITEMS]; // array of keys
         uint32_t nItems; // number of items
         // key is like a pointer address to the values
         // supplying a dictionary with a key will directly get the value
