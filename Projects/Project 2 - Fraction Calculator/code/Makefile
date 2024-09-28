@@ -7,7 +7,7 @@ all: $(PROJECT) clean
 $(PROJECT): $(PROJECT).o fraction.o
 	$(COPTIONS) -o $(PROJECT) $(PROJECT).o fraction.o
 
-$(PROJECT).o: $(PROJECT).cc fraction.h stack.cc stack.h
+$(PROJECT).o: $(PROJECT).cc fraction.h stack.cc stack.h dictionary.cc dictionary.h
 	$(COPTIONS) -c $(PROJECT).cc -o $(PROJECT).o
 
 fraction.o: fraction.cc fraction.h

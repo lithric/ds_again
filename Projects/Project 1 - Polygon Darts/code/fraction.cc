@@ -119,19 +119,19 @@ Fraction::Fraction(int32_t _num, double _dnum, int32_t _den, double _dden, bool 
     dden = _dden/static_cast<double>(gcd_n);
 }
 
-Fraction* Fraction::operator=(Fraction rhs) {
-    this->num = rhs.num;
-    this->den = rhs.den;
-    this->dnum = rhs.dnum;
-    this->dden = rhs.dden;
-    return this;
+const Fraction& Fraction::operator=(const Fraction& rhs) {
+    num = rhs.num;
+    den = rhs.den;
+    dnum = rhs.dnum;
+    dden = rhs.dden;
+    return rhs;
 }
 
 Fraction Fraction::operator+() {
     return Fraction(num,dnum,den,dden,false);
 }
 
-Fraction Fraction::operator+(Fraction rhs) {
+Fraction Fraction::operator+(const Fraction& rhs) {
     int32_t _num, _den;
     double _dnum, _dden;
 
@@ -151,7 +151,7 @@ Fraction Fraction::operator-() {
     return Fraction(-num,-dnum,den,dden,false);
 }
 
-Fraction Fraction::operator-(Fraction rhs) {
+Fraction Fraction::operator-(const Fraction& rhs) {
     int32_t _num, _den;
     double _dnum, _dden;
 
@@ -167,7 +167,7 @@ Fraction Fraction::operator-(Fraction rhs) {
     return Fraction(_num,_dnum,_den,_dden);
 }
 
-Fraction Fraction::operator*(Fraction rhs) {
+Fraction Fraction::operator*(const Fraction& rhs) {
     int32_t _num, _den;
     double _dnum, _dden;
     _num = num;
@@ -181,7 +181,7 @@ Fraction Fraction::operator*(Fraction rhs) {
     return Fraction(_num,_dnum,_den,_dden);
 }
 
-Fraction Fraction::operator/(Fraction rhs) {
+Fraction Fraction::operator/(const Fraction& rhs) {
     int32_t _num, _den;
     double _dnum, _dden;
     _num = num;
@@ -195,7 +195,7 @@ Fraction Fraction::operator/(Fraction rhs) {
     return Fraction(_num,_dnum,_den,_dden);
 }
 
-Fraction Fraction::operator^(int32_t rhs) {
+Fraction Fraction::operator^(const int32_t& rhs) {
     int32_t _num, _den;
     double _dnum, _dden, _lnum, _lden;
     if (rhs==0) return Fraction(1,1,false);
@@ -203,8 +203,8 @@ Fraction Fraction::operator^(int32_t rhs) {
     _dnum = rhs>0?dnum:dden;
     _den = rhs>0?den:num;
     _dden = rhs>0?dden:dnum;
-    rhs = abs(rhs);
-    while (rhs>1) {
+    int32_t _rhs = abs(rhs);
+    while (_rhs>1) {
         _lnum = _num*dnum+_dnum*num;
         _lden = _den*dden+_dden*den;
         _num = _num*num+std::floor(_lnum);
@@ -213,37 +213,37 @@ Fraction Fraction::operator^(int32_t rhs) {
         _den = _den*den+std::floor(_lden);
         _dden = _dden*dden+(_lden-std::floor(_lden));
         format_int_decimal(&_den,&_dden);
-        rhs--;
+        _rhs--;
     }
     return Fraction(_num,_dnum,_den,_dden);
 }
 
-bool Fraction::operator==(Fraction rhs) {
+bool Fraction::operator==(const Fraction& rhs) {
     return num==rhs.num&&den==rhs.den&&
            dnum==rhs.dnum&&dden==rhs.dden;
 }
 
-bool Fraction::operator!=(Fraction rhs) {
+bool Fraction::operator!=(const Fraction& rhs) {
     return num!=rhs.num||den!=rhs.den||
            dnum!=rhs.dnum||dden!=rhs.dden;
 }
 
-bool Fraction::operator>=(Fraction rhs) {
+bool Fraction::operator>=(const Fraction& rhs) {
     if (*this==rhs) return true;
     return (num+dnum)*(rhs.den+rhs.dden)>=(den+dden)*(rhs.num+rhs.dnum);
 }
 
-bool Fraction::operator<=(Fraction rhs) {
+bool Fraction::operator<=(const Fraction& rhs) {
     if (*this==rhs) return true; // faster
     return (num+dnum)*(rhs.den+rhs.dden)<=(den+dden)*(rhs.num+rhs.dnum);
 }
 
-bool Fraction::operator>(Fraction rhs) {
+bool Fraction::operator>(const Fraction& rhs) {
     if (*this==rhs) return false; // faster
     return (num+dnum)*(rhs.den+rhs.dden)>(den+dden)*(rhs.num+rhs.dnum);
 }
 
-bool Fraction::operator<(Fraction rhs) {
+bool Fraction::operator<(const Fraction& rhs) {
     if (*this==rhs) return false; // faster
     return (num+dnum)*(rhs.den+rhs.dden)<(den+dden)*(rhs.num+rhs.dnum);
 }

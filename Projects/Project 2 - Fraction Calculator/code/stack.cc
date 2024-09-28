@@ -1,49 +1,42 @@
 #include "stack.h"
+#include <stdexcept>
+#include <iostream>
 
-// empty stack
+// initialize empty stack
 template <typename T>
 Stack<T>::Stack() {
     top = nullptr;
     next = nullptr;
 }
 
-// length 1 stack
-template <typename T>
-Stack<T>::Stack(T _top) {
-    top = &_top;
-    next = new Stack<T>();
-}
-
-// arbitrary length stack
-template <typename T>
-Stack<T>::Stack(T _top, Stack<T>* _next) {
-    top = &_top;
-    next = _next;
-}
-
 template <typename T>
 void Stack<T>::push(T rhs) {
-    if (top==nullptr) { // empty stack
-        *next = Stack<T>();
+    if (next==nullptr) { // empty stack
+        top = new T;
+        next = new Stack<T>();
         *top = rhs;
         return;
     }
-    else {
-        *next = Stack<T>(*top,next);
-        *top = rhs;
-        return;
-    }
+    Stack<T>* _temp_next = next;
+    T* _temp_top = top;
+    next = new Stack<T>();
+    top = new T;
+    next->top = _temp_top;
+    next->next = _temp_next;
+    *top = rhs;
 }
 
 template <typename T>
 T Stack<T>::pop() {
-    if (top==nullptr) { // empty stack
-        throw "tried to remove from empty stack";
-    }
-    else {
-        T data = *top;
-        top = *next.top;
-        next = *next.next;
-        return data;
-    }
+    if (next==nullptr) throw std::underflow_error("pop: Stack is empty.");
+    T data = *top;
+    T* pt_top_del = top;
+    Stack<T>* pt_next_del = next;
+    top = next->top;
+    next = next->next;
+    delete pt_top_del;
+    pt_next_del->top = nullptr;
+    pt_next_del->next = nullptr;
+    delete pt_next_del;
+    return data;
 }

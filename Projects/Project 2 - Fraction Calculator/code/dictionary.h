@@ -15,17 +15,19 @@ class Dictionary {
         
         void clear() {nItems=0;}
 
-        void insert(const KeyType &k, ValueType &v);
+        void insert(const KeyType &k, ValueType v);
         void remove(const KeyType &k);
 
-        ValueType search(const KeyType &k)
+        ValueType search(const KeyType &k);
     private:
-        ValueType* values; // array of values
-        KeyType* keys; // array of keys
+        ValueType* values = new ValueType[MAX_ITEMS]; // array of values
+        KeyType* keys = new KeyType[MAX_ITEMS]; // array of keys
         uint32_t nItems; // number of items
         // key is like a pointer address to the values
         // supplying a dictionary with a key will directly get the value
         // KeyType
 };
+
+#include "dictionary.cc"
 
 #endif

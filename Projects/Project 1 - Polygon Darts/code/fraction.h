@@ -1,37 +1,42 @@
+#ifndef _FRACTION_H
+#define _FRACTION_H
 #include <iostream>
 #include <cstdint>
 #include <cmath>
-
-#ifndef _FRACTION_H
-#define _FRACTION_H
 
 class Fraction {
     public:
         Fraction(int32_t _num=0, int32_t _den=1, bool simplify=true);
         Fraction(double _num, double _den=1, bool simplify=true);
         Fraction(int32_t _num, double _dnum, int32_t _den, double _dden, bool simplify=true);
+        Fraction(const Fraction& rhs) {
+            num = rhs.num;
+            dnum = rhs.dnum;
+            den = rhs.den;
+            dden = rhs.dden;
+        };
         ~Fraction() = default;
 
-        Fraction* operator=(Fraction rhs);
+        const Fraction& operator=(const Fraction& rhs);
         Fraction operator-();
-        Fraction operator-(Fraction rhs);
-        Fraction* operator-=(Fraction rhs) {*this=*this-rhs;return this;}
+        Fraction operator-(const Fraction& rhs);
+        const Fraction& operator-=(const Fraction& rhs) {return *this=*this-rhs;}
         Fraction operator+();
-        Fraction operator+(Fraction rhs);
-        Fraction* operator+=(Fraction rhs) {*this=*this+rhs;return this;}
-        Fraction operator*(Fraction rhs);
-        Fraction* operator*=(Fraction rhs) {*this=*this*rhs;return this;}
-        Fraction operator/(Fraction rhs);
-        Fraction* operator/=(Fraction rhs) {*this=*this/rhs;return this;}
-        Fraction operator^(int32_t rhs);
-        Fraction* operator^=(int32_t rhs) {*this=*this^rhs;return this;}
+        Fraction operator+(const Fraction& rhs);
+        const Fraction& operator+=(const Fraction& rhs) {return *this=*this+rhs;}
+        Fraction operator*(const Fraction& rhs);
+        const Fraction& operator*=(const Fraction& rhs) {return *this=*this*rhs;}
+        Fraction operator/(const Fraction& rhs);
+        const Fraction& operator/=(const Fraction& rhs) {return *this=*this/rhs;}
+        Fraction operator^(const int32_t& rhs);
+        const Fraction& operator^=(const int32_t& rhs) {return *this=*this^rhs;}
 
-        bool operator==(Fraction rhs);
-        bool operator!=(Fraction rhs);
-        bool operator>=(Fraction rhs);
-        bool operator<=(Fraction rhs);
-        bool operator>(Fraction rhs);
-        bool operator<(Fraction rhs);
+        bool operator==(const Fraction& rhs);
+        bool operator!=(const Fraction& rhs);
+        bool operator>=(const Fraction& rhs);
+        bool operator<=(const Fraction& rhs);
+        bool operator>(const Fraction& rhs);
+        bool operator<(const Fraction& rhs);
 
         int32_t getNum() {return num;};
         int32_t getDen() {return den;};
