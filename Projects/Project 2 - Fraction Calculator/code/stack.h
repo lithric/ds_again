@@ -10,7 +10,7 @@ class Stack {
         ~Stack() {
             if (next!=nullptr) {
                 delete top;
-                delete next;
+                delete next; // calls destructor for subsequent stacks
             }
         }
 

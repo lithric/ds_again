@@ -30,13 +30,16 @@ template <typename T>
 T Stack<T>::pop() {
     if (next==nullptr) throw std::underflow_error("pop: Stack is empty.");
     T data = *top;
+
+    // data to be deleted/removed from the stack
     T* pt_top_del = top;
     Stack<T>* pt_next_del = next;
+
     top = next->top;
     next = next->next;
-    delete pt_top_del;
+    delete pt_top_del; // free dangling ptr holding unreferenced T data
     pt_next_del->top = nullptr;
     pt_next_del->next = nullptr;
-    delete pt_next_del;
+    delete pt_next_del; // free dangling ptr holding unreferenced Stack<T> data
     return data;
 }
