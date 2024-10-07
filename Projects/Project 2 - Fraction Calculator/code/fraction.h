@@ -48,6 +48,16 @@ class Fraction {
         bool isInfinity() const {return (num!=0||dnum!=0)&&(den==0&&dden==0);}
         bool isPInfinity() const {return (num>0||dnum>0)&&(den==0&&dden==0);}
         bool isNInfinity() const {return (num<0||dnum<0)&&(den==0&&dden==0);}
+        bool isZero() const {return num==0&&dnum==0&&den==1&&dden==0;}
+
+        static const Fraction NaN() {
+            static const Fraction NaN = Fraction(0,0,false);
+            return NaN;
+        }
+        static const Fraction Infinity() {
+            static const Fraction Infinity = Fraction(1,0,false);
+            return Infinity;
+        }
 
     private:
         int32_t num;

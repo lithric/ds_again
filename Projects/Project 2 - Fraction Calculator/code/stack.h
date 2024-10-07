@@ -14,8 +14,8 @@ class Stack {
             }
         }
 
-        bool isEmpty() {return next==nullptr;}
-        uint32_t size() {
+        bool isEmpty() const {return next==nullptr;}
+        uint32_t size() const {
             uint32_t count = 0;
             Stack<T>* q = next;
             while (q!=nullptr) {
@@ -30,11 +30,11 @@ class Stack {
         void push(T);
         T pop();
 
-        T getTop() {
+        T getTop() const {
             if (isEmpty()) throw std::underflow_error("getTop: Nothing to return. Stack empty.");
             return *top;
         }
-        Stack<T> getNext() {
+        Stack<T> getNext() const {
             if (isEmpty()) throw std::underflow_error("getNext: Nothing to return. Stack empty.");
             return *next;
         }

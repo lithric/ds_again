@@ -132,13 +132,13 @@ Fraction Fraction::operator+() const {
 Fraction Fraction::operator+(const Fraction& rhs) const {
     int32_t _num, _den;
     double _dnum, _dden;
-    if (isNaN()||rhs.isNaN()) return Fraction(0,0);
+    if (isNaN()||rhs.isNaN()) return NaN();
 
     if (isInfinity()||rhs.isInfinity()) {
         if ((isPInfinity()&&rhs.isNInfinity())||
-            (isNInfinity()&&rhs.isPInfinity())) return Fraction(0,0);
-        if (isPInfinity()&&rhs.isPInfinity()) return Fraction(1,0);
-        if (isNInfinity()&&rhs.isNInfinity()) return Fraction(-1,0);
+            (isNInfinity()&&rhs.isPInfinity())) return NaN();
+        if (isPInfinity()&&rhs.isPInfinity()) return Infinity();
+        if (isNInfinity()&&rhs.isNInfinity()) return -Infinity();
     }
 
     _num = num*rhs.den+den*rhs.num;
@@ -160,6 +160,14 @@ Fraction Fraction::operator-() const {
 Fraction Fraction::operator-(const Fraction& rhs) const {
     int32_t _num, _den;
     double _dnum, _dden;
+    if (isNaN()||rhs.isNaN()) return NaN();
+
+    if (isInfinity()||rhs.isInfinity()) {
+        if ((isPInfinity()&&rhs.isPInfinity())||
+            (isNInfinity()&&rhs.isNInfinity())) return NaN();
+        if (isPInfinity()&&rhs.isNInfinity()) return Infinity();
+        if (isNInfinity()&&rhs.isPInfinity()) return -Infinity();
+    }
 
     _num = num*rhs.den-den*rhs.num;
     _dnum = static_cast<double>(num)*rhs.dden-static_cast<double>(rhs.num)*dden+
@@ -176,6 +184,12 @@ Fraction Fraction::operator-(const Fraction& rhs) const {
 Fraction Fraction::operator*(const Fraction& rhs) const {
     int32_t _num, _den;
     double _dnum, _dden;
+    if (isNaN()||rhs.isNaN()) return NaN();
+
+    if (isInfinity()||rhs.isInfinity()) {
+        if ((isInfinity()&&rhs.isZero())||
+            (isZero()&&rhs.isInfinity())) return NaN();
+    }
     _num = num;
     _dnum = dnum;
     _den = den;
@@ -192,6 +206,11 @@ Fraction Fraction::operator/(const Fraction& rhs) const {
     double _dnum = dnum;
     int32_t _den = den;
     double _dden = dden;
+    if (isNaN()||rhs.isNaN()) return NaN();
+
+    if (isInfinity()||rhs.isInfinity()) {
+        if (isInfinity()&&rhs.isInfinity()) return NaN();
+    } 
 
     mult_int_decimal(&_num,&_dnum,rhs.den,rhs.dden);
     mult_int_decimal(&_den,&_dden,rhs.num,rhs.dnum);
@@ -203,6 +222,7 @@ Fraction Fraction::operator^(const int32_t& rhs) const {
     int32_t _num, _den;
     double _dnum, _dden, _lnum, _lden;
     if (rhs==0) return Fraction(1,1,false);
+    if (isNaN()) return NaN();
     _num = rhs>0?num:den;
     _dnum = rhs>0?dnum:dden;
     _den = rhs>0?den:num;
