@@ -5,12 +5,12 @@
 #include "dictionary.h"
 
 // allows recursion
-#define AS_MACRO
+#define AS_FUNC_MACRO
 // ends recursion
 #define END_SIGNAL(...)
 
 #define MAP_IS_END_SIGNAL() 0, END_SIGNAL
-#define MAP_NEXT0(test_end,next_macro,...) next_macro AS_MACRO
+#define MAP_NEXT0(test_end,next_macro,...) next_macro AS_FUNC_MACRO
 #define MAP_NEXT1(test_end,next_macro) MAP_NEXT0 (test_end, next_macro, 0)
 #define MAP_NEXT(test_end,next_macro) MAP_NEXT1 (MAP_IS_END_SIGNAL test_end, next_macro)
 #define MAP0(f, x, test_end, args...) f(x)MAP_NEXT(test_end,MAP1) (f, test_end, args)
@@ -24,7 +24,7 @@
 #define EVAL4(args...) EVAL3(EVAL3(EVAL3(args)))
 #define EVAL(args...)  EVAL4(EVAL4(EVAL4(args)))
 
-#define SHIFT_NAME(MACRO_NAME,FUNC_MACRO,args...) FUNC_MACRO AS_MACRO (args,MACRO_NAME)
+#define SHIFT_NAME(MACRO_NAME,FUNC_MACRO,args...) FUNC_MACRO AS_FUNC_MACRO (args,MACRO_NAME)
 #define GET_MACRO(_1,_2,_3,_4,NAME,...) NAME
 #define FOO(args...) GET_MACRO(args, FOO4, FOO3, FOO2, FOO1)(args)
 
@@ -200,22 +200,22 @@ Fraction evaluate(string s,Stack<VarNum>* numStack, Stack<char>* opStack, Dictio
         if (isDigit(s[first])) {
             Fraction number = convertDigitsToFraction(s,first,&digitsEnd);
             numStack->push(VarNum {.number = number});
-            if (debugging) print("[",numStack->getTop().number,"]","\n");
+            if (debugging) print("[",numStack->peek().number,"]","\n");
             first = digitsEnd+1;
         } 
         else if (isLetter(s[first])) {
             string varName = convertLettersToString(s,first,&lettersEnd);
             numStack->push(VarNum {.varName = varName});
-            if (debugging) print("[",numStack->getTop().varName,"]","\n");
+            if (debugging) print("[",numStack->peek().varName,"]","\n");
             first = lettersEnd+1;
         } 
         else if (s[first]=='(') {
             opStack->push('(');
-            if (debugging) print(opStack->getTop(),"\n");
+            if (debugging) print(opStack->peek(),"\n");
             first++;
         } 
         else if (s[first]==')') {
-            while (opStack->getTop()!='(') {
+            while (opStack->peek()!='(') {
                 if (!debugging) performOperation(numStack,opStack,varDict);
                 if (debugging) opStack->pop();
             }
@@ -224,11 +224,11 @@ Fraction evaluate(string s,Stack<VarNum>* numStack, Stack<char>* opStack, Dictio
             first++;
         } 
         else if (isOperator(s[first])) {
-            if (!debugging) while (hasPrecedence(opStack->getTop(),s[first])) {
+            if (!debugging) while (hasPrecedence(opStack->peek(),s[first])) {
                 performOperation(numStack,opStack,varDict);
             }
             opStack->push(s[first]);
-            if (debugging) print(opStack->getTop(),"\n");
+            if (debugging) print(opStack->peek(),"\n");
             first++;
         } 
         else {
@@ -236,13 +236,13 @@ Fraction evaluate(string s,Stack<VarNum>* numStack, Stack<char>* opStack, Dictio
         }
     }
 
-    if (!debugging) while (opStack->getTop()!='$') {
+    if (!debugging) while (opStack->peek()!='$') {
         performOperation(numStack,opStack,varDict);
     }
 
     if (!debugging) if (numStack->size()>1||opStack->size()>1) throw std::domain_error("calc: malformed input");
 
-    return getNumber(numStack->getTop(),varDict);
+    return getNumber(numStack->peek(),varDict);
 }
 
 int main(int argc, const char* argv[]) {
