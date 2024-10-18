@@ -2,6 +2,7 @@
     "cSpell.words": [
         "dden",
         "dnum",
+        "REPI",
         "UNSORTEDDICTIONARY"
     ],
     "files.associations": {
@@ -52,6 +53,7 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "cstring": "cpp"
     }
 }
