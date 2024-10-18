@@ -4,10 +4,21 @@
 #include "stack.h"
 #include "dictionary.h"
 
+// test macro
+#define TEST_MACRO "world"
+
 // allows recursion
 #define AS_FUNC_MACRO
 // ends recursion
 #define END_SIGNAL(...)
+// conditional recursion
+#define MACRO_FALSE ()
+#define DO_MACRO_END() 0, END_SIGNAL ()
+#define DO_MACRO0(test_end,macro,...) macro
+#define DO_IF_NOT_FALSE(macro,test_end) EVAL(DO_MACRO0 AS_FUNC_MACRO (DO_MACRO_END test_end, macro))
+#define REPLACE_IF_NOT0(test_signal, macro, end_signal) 
+#define REPLACE_IF_NOT1(test_signal, macro, end_signal)
+#define REPLACE_IF_NOT(test_signal, macro, end_signal) EVAL1(REPLACE_IF_NOT0(test_signal,macro,end_signal))
 
 #define MAP_IS_END_SIGNAL() 0, END_SIGNAL
 #define MAP_NEXT0(test_end,next_macro,...) next_macro AS_FUNC_MACRO
@@ -27,6 +38,8 @@
 #define SHIFT_NAME(MACRO_NAME,FUNC_MACRO,args...) FUNC_MACRO AS_FUNC_MACRO (args,MACRO_NAME)
 #define GET_MACRO(_1,_2,_3,_4,NAME,...) NAME
 #define FOO(args...) GET_MACRO(args, FOO4, FOO3, FOO2, FOO1)(args)
+
+//DO_IF_NOT_FALSE(TEST_MACRO,a)
 
 using namespace std;
 
