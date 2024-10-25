@@ -5,7 +5,7 @@
 #include "dictionary.h"
 
 // test macro
-#define TEST_MACRO "world"
+#define TEST_MACRO "Hello, world!"
 
 // allows recursion
 #define AS_FUNC_MACRO
@@ -13,12 +13,15 @@
 #define END_SIGNAL(...)
 // conditional recursion
 #define MACRO_FALSE ()
-#define DO_MACRO_END() 0, END_SIGNAL ()
-#define DO_MACRO0(test_end,macro,...) macro
-#define DO_IF_NOT_FALSE(macro,test_end) EVAL(DO_MACRO0 AS_FUNC_MACRO (DO_MACRO_END test_end, macro))
-#define REPLACE_IF_NOT0(test_signal, macro, end_signal) 
-#define REPLACE_IF_NOT1(test_signal, macro, end_signal)
-#define REPLACE_IF_NOT(test_signal, macro, end_signal) EVAL1(REPLACE_IF_NOT0(test_signal,macro,end_signal))
+#define DO_MACRO0(garbage,macro,...) macro
+#define TEST_END() 0, END_SIGNAL ()
+#define TEST0(macro) 0, macro ()
+#define ON_FALSE0(test_end,args...) args
+#define ON_FALSE ON_FALSE0 AS_FUNC_MACRO (TEST_END
+#define THEN_DO ,
+#define THEN_END )
+#define REPLACE_IF_NOT_FALSE(macro,test_end) EVAL0(DO_MACRO0 AS_FUNC_MACRO (TEST_END test_end, macro))
+#define REPLACE_ELSE(macro,else_macro) DO_MACRO0 AS_FUNC_MACRO (ON_END(END_SIGNAL) macro, macro, else_macro)
 
 #define MAP_IS_END_SIGNAL() 0, END_SIGNAL
 #define MAP_NEXT0(test_end,next_macro,...) next_macro AS_FUNC_MACRO
@@ -39,7 +42,7 @@
 #define GET_MACRO(_1,_2,_3,_4,NAME,...) NAME
 #define FOO(args...) GET_MACRO(args, FOO4, FOO3, FOO2, FOO1)(args)
 
-//DO_IF_NOT_FALSE(TEST_MACRO,a)
+// ON_FALSE "a" THEN_DO TEST_MACRO THEN_END
 
 using namespace std;
 
